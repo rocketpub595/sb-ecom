@@ -3,23 +3,38 @@ package com.ecommerce.project.Service;
 import com.ecommerce.project.Exceptions.APIExceptions;
 import com.ecommerce.project.Exceptions.ResourceNotFoundException;
 import com.ecommerce.project.Model.Category;
+import com.ecommerce.project.Payload.CategoryDTO;
+import com.ecommerce.project.Payload.CategoryResponse;
 import com.ecommerce.project.Repositories.CategoryRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 public class CategoryServiceImpl implements CategoryService{
+
+
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Override
-    public List<Category> getAllCategories() {
+    public CategoryResponse getAllCategories() {
         List<Category> categories = categoryRepository.findAll();
         if(categories.isEmpty()){
             throw new APIExceptions("Category Empty. Please add at least one category");
         }
-        return categories;
+
+        List<CategoryDTO> categoryDTOS = categories.stream()
+                .map(category -> modelMapper.map(category, CategoryDTO.class))
+                .toList();
+
+        CategoryResponse categoryResponse = new CategoryResponse();
+        categoryResponse.setContent(categoryDTOS);
+        return categoryResponse;
     }
 
     @Override
