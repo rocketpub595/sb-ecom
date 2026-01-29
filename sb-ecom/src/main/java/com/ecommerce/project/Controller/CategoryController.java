@@ -2,6 +2,7 @@ package com.ecommerce.project.Controller;
 import java.util.*;
 
 import com.ecommerce.project.Model.Category;
+import com.ecommerce.project.Payload.CategoryDTO;
 import com.ecommerce.project.Payload.CategoryResponse;
 import com.ecommerce.project.Service.CategoryService;
 import jakarta.validation.Valid;
@@ -33,8 +34,8 @@ public class CategoryController {
 
     }
     @PostMapping("/api/public/categories")
-    public ResponseEntity<String> CreateCategory(@Valid @RequestBody Category category){
-        categoryService.createCategory(category);
+    public ResponseEntity<String> CreateCategory(@Valid @RequestBody CategoryDTO categoryDTO){
+        categoryService.createCategory(categoryDTO);
         return new ResponseEntity<>("Category Added Successfully ",HttpStatus.CREATED);
     }
 
