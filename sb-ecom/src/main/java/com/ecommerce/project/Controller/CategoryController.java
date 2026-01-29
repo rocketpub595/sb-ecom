@@ -28,9 +28,9 @@ public class CategoryController {
 
     @PutMapping("/api/admin/categories/{categoryId}")
     @RequestMapping(value = "/api/admin/categories/{categoryId}", method = RequestMethod.PUT)
-    public ResponseEntity<String> updateCategory(@PathVariable Long categoryId,@Valid @RequestBody Category NewCategory){
-            String status = String.valueOf(categoryService.updateCategory( NewCategory ,categoryId));
-            return new ResponseEntity<>(status ,HttpStatus.OK);
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long categoryId,@Valid @RequestBody CategoryDTO NewCategoryDTO){
+            CategoryDTO updateCategoryDTO= categoryService.updateCategory(NewCategoryDTO ,categoryId);
+            return new ResponseEntity<>(updateCategoryDTO ,HttpStatus.OK);
 
     }
     @PostMapping("/api/public/categories")
