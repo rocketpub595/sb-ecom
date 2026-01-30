@@ -40,8 +40,8 @@ public class CategoryController {
     }
 
     @DeleteMapping("/api/admin/categories/{categoryId}")
-    public ResponseEntity<String> DeleteCategory(@PathVariable Long categoryId){
-            String status = categoryService.deleteCategory(categoryId);
-            return new  ResponseEntity<>(status, HttpStatus.OK);
+    public ResponseEntity<CategoryDTO> DeleteCategory(@PathVariable Long categoryId){
+            CategoryDTO deletedCategory = categoryService.deleteCategory(categoryId);
+            return new  ResponseEntity<>(deletedCategory, HttpStatus.OK);
     }
 }
