@@ -1,7 +1,6 @@
 package com.ecommerce.project.Controller;
 import java.util.*;
 
-import com.ecommerce.project.Model.Category;
 import com.ecommerce.project.Payload.CategoryDTO;
 import com.ecommerce.project.Payload.CategoryResponse;
 import com.ecommerce.project.Service.CategoryService;
@@ -19,10 +18,13 @@ public class CategoryController {
     @Autowired
     CategoryService categoryService;
 
-    //@GetMapping("/api/public/categories")
-    @RequestMapping(value = "/api/public/categories", method = RequestMethod.GET)
-    public ResponseEntity<CategoryResponse> getAllCategories(){
-        CategoryResponse categoryResponse= categoryService.getAllCategories();
+    @GetMapping("/api/public/categories")
+    //@RequestMapping(value = "/api/public/categories", method = RequestMethod.GET)
+    public ResponseEntity<CategoryResponse> getAllCategories(
+            @RequestParam(name = "pageNumber") Integer pageNumber,
+            @RequestParam(name = "pageSize") Integer pageSize
+    ){
+        CategoryResponse categoryResponse= categoryService.getAllCategories(pageNumber, pageSize);
         return  new ResponseEntity<>(categoryResponse , HttpStatus.OK);
     }
 
