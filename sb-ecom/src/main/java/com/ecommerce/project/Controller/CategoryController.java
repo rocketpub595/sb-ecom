@@ -1,6 +1,7 @@
 package com.ecommerce.project.Controller;
 import java.util.*;
 
+import com.ecommerce.project.Config.AppConstants;
 import com.ecommerce.project.Payload.CategoryDTO;
 import com.ecommerce.project.Payload.CategoryResponse;
 import com.ecommerce.project.Service.CategoryService;
@@ -21,8 +22,8 @@ public class CategoryController {
     @GetMapping("/api/public/categories")
     //@RequestMapping(value = "/api/public/categories", method = RequestMethod.GET)
     public ResponseEntity<CategoryResponse> getAllCategories(
-            @RequestParam(name = "pageNumber") Integer pageNumber,
-            @RequestParam(name = "pageSize") Integer pageSize
+            @RequestParam(name = "pageNumber" , defaultValue = AppConstants.PAGE_NUMBER , required = false) Integer pageNumber,
+            @RequestParam(name = "pageSize" , defaultValue = AppConstants.PAGE_SIZE , required = false) Integer pageSize
     ){
         CategoryResponse categoryResponse= categoryService.getAllCategories(pageNumber, pageSize);
         return  new ResponseEntity<>(categoryResponse , HttpStatus.OK);
