@@ -1,5 +1,4 @@
 package com.ecommerce.project.Service;
-import com.ecommerce.project.Model.Category;
 import com.ecommerce.project.Payload.CategoryDTO;
 import com.ecommerce.project.Payload.CategoryResponse;
 
