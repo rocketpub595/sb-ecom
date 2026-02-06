@@ -12,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-//@RequestMapping("/api") if i Use this I will no longer have the need to put /api in any of the Endpoint URLs
-//like @PostMapping("/public/categories/{category})
 public class CategoryController {
 
     @Autowired
