@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -46,6 +44,23 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponse getAllProducts() {
         List<Product> products = productRepository.findAll();
+        List<ProductDTO> productDTOS = products.stream()
+                .map(product -> modelMapper.map(product , ProductDTO.class))
+                .toList();
+
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setContents(productDTOS);
+        return productResponse;
+    }
+
+    @Override
+    public ProductResponse searchbyCategory(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Category" , "categoryId" , categoryId));
+
+        List<Product> products = productRepository.findByCategoryOrderByPriceAsc(category);
+
         List<ProductDTO> productDTOS = products.stream()
                 .map(product -> modelMapper.map(product , ProductDTO.class))
                 .toList();
