@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -105,5 +106,16 @@ public class ProductServiceImpl implements ProductService {
         //Saving to Database
         Product savedProduct = productRepository.save(productFromDB);
         return modelMapper.map(savedProduct, ProductDTO.class);
+    }
+
+    @Override
+    public ProductDTO deleteProduct(Long productId) {
+        List<Product> products = productRepository.findAll();
+        Product product = products.stream().filter(c -> Objects.equals(c.getProductid(), productId))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Product" , "productId" , productId));
+
+        productRepository.delete(product);
+        return  modelMapper.map(product, ProductDTO.class);
     }
 }
