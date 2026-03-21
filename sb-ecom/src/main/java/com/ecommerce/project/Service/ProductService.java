@@ -1,11 +1,11 @@
 package com.ecommerce.project.Service;
 
-import com.ecommerce.project.Model.Product;
+
 import com.ecommerce.project.Payload.ProductDTO;
 import com.ecommerce.project.Payload.ProductResponse;
 
 public interface ProductService {
-    ProductDTO addProduct(Long categoryId, Product product);
+    ProductDTO addProduct(Long categoryId, ProductDTO productDTO);
 
     ProductResponse getAllProducts();
 
