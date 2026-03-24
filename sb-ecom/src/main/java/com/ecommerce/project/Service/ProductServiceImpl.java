@@ -11,6 +11,10 @@ import com.ecommerce.project.Repositories.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -69,9 +73,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse getAllProducts() {
+    public ProductResponse getAllProducts(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+        Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageDetails = PageRequest.of(pageNumber, pageSize, sortByAndOrder);
+        Page<Product> pageProducts = productRepository.findAll(pageDetails);
+
         // To check is product Size is Zero
-        List<Product> products = productRepository.findAll();
+        List<Product> products = pageProducts.getContent();
         List<ProductDTO> productDTOS = products.stream()
                 .map(product -> modelMapper.map(product , ProductDTO.class))
                 .toList();
@@ -79,8 +90,14 @@ public class ProductServiceImpl implements ProductService {
         if(products.isEmpty()) {
             throw new APIExceptions("No Products Found");
         }
+
         ProductResponse productResponse = new ProductResponse();
         productResponse.setContents(productDTOS);
+        productResponse.setPageNumber(pageProducts.getNumber());
+        productResponse.setPageSize(pageProducts.getSize());
+        productResponse.setTotalElements(pageProducts.getTotalElements());
+        productResponse.setTotalPages(pageProducts.getTotalPages());
+        productResponse.setLastPage(pageProducts.isLast());
         return productResponse;
     }
 
@@ -142,7 +159,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDTO deleteProduct(Long productId) {
         List<Product> products = productRepository.findAll();
-        Product product = products.stream().filter(c -> Objects.equals(c.getProductid(), productId))
+        Product product = products.stream().filter(c -> Objects.equals(c.getProductId(), productId))
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("Product" , "productId" , productId));
 

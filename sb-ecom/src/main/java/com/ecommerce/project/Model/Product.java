@@ -16,7 +16,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productid;
+    private Long productId;
     @NotBlank
     @Size(min = 3, message = "Product Name should contain at least 3 characters")
     private String productName;
