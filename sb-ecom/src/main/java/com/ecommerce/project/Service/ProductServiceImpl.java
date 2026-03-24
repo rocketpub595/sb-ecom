@@ -76,6 +76,9 @@ public class ProductServiceImpl implements ProductService {
                 .map(product -> modelMapper.map(product , ProductDTO.class))
                 .toList();
 
+        if(products.isEmpty()) {
+            throw new APIExceptions("No Products Found");
+        }
         ProductResponse productResponse = new ProductResponse();
         productResponse.setContents(productDTOS);
         return productResponse;
