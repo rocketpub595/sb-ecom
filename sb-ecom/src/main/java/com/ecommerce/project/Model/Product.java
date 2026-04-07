@@ -5,10 +5,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
 @AllArgsConstructor
+@Table(name = "products")
+@ToString
 public class Product {
 
     @JsonCreator
